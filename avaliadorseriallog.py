@@ -60,7 +60,7 @@ def processar_arquivo(caminho):
             if p in contagem:
                 contagem[p] += 1
 
-        # Simulação de processamento pesado
+        
         for _ in range(1000):
             pass
 
@@ -73,60 +73,60 @@ def processar_arquivo(caminho):
 
 
 # ===============================
-# Função do Trabalhador (Consumidor)
+# Função do Trabalhador
 # ===============================
 def consumidor_worker(fila_tarefas, fila_resultados):
     """Pega os arquivos da fila, processa e guarda o resultado."""
     while True:
         caminho = fila_tarefas.get()
-        if caminho is None: # Sinal de que os arquivos acabaram
+        if caminho is None: 
             break
         resultado = processar_arquivo(caminho)
         fila_resultados.put(resultado)
 
 
 # ===============================
-# Execução (com o miolo paralelizado)
-# ===============================
+# Execução
+# =========================================================
 def executar_serial(pasta):
     resultados = []
 
     inicio = time.time()
 
-# paralelizar essa parte
+
     import multiprocessing as mp
     
-    num_processos = 12  # ATENÇÃO: Mude aqui para 2, 4, 8 ou 12 para pegar os tempos depois!
+    num_processos = 12  # 2, 4, 8 ou 12 
     
-    # Cria as filas. O maxsize=50 é o "buffer limitado" que o professor exigiu.
+    
     fila_tarefas = mp.Queue(maxsize=50) 
     fila_resultados = mp.Queue()
     
-    # 1. Inicia os processos Consumidores
+    
     consumidores = []
     for _ in range(num_processos):
         p = mp.Process(target=consumidor_worker, args=(fila_tarefas, fila_resultados))
         p.start()
         consumidores.append(p)
         
-    # 2. O Produtor: o próprio for original jogando as tarefas na fila
+    
     arquivos = os.listdir(pasta)
     for arquivo in arquivos:
         caminho = os.path.join(pasta, arquivo)
-        fila_tarefas.put(caminho) # Joga no buffer limitado
+        fila_tarefas.put(caminho) 
         
-    # 3. Manda um sinal (None) para cada consumidor saber que o trabalho acabou
+    
     for _ in range(num_processos):
         fila_tarefas.put(None)
         
-    # 4. Consumidor de resultados: recolhe as respostas processadas
+    
     for _ in arquivos:
         resultados.append(fila_resultados.get())
         
-    # 5. Finaliza os processos de forma limpa
+    
     for p in consumidores:
         p.join()
-# paralelizar até aqui 
+ 
 
     fim = time.time()
 
@@ -152,8 +152,8 @@ def executar_serial(pasta):
 # Main
 # ===============================
 if __name__ == "__main__":
-    # Deixei a pasta log1 para você testar primeiro. 
-    # Quando for cronometrar valendo, mude para "log2".
+     
+    
     pasta = "log2" 
 
     print("Iniciando o programa...")
