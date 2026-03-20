@@ -31,7 +31,7 @@ Os testes foram executados no seguinte ambiente de hardware e software:
 | Sistema Operacional         | Windows 11 Pro |
 | Linguagem utilizada         | Python |
 | Biblioteca de paralelização | `multiprocessing` |
-| Compilador / Versão         | [EX: Python 3.10] |
+| Compilador / Versão         | Python 3.13.2 |
 
 ---
 
