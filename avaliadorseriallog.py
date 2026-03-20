@@ -96,7 +96,7 @@ def executar_serial(pasta):
 # paralelizar essa parte
     import multiprocessing as mp
     
-    num_processos = 2  # ATENÇÃO: Mude aqui para 2, 4, 8 ou 12 para pegar os tempos depois!
+    num_processos = 12  # ATENÇÃO: Mude aqui para 2, 4, 8 ou 12 para pegar os tempos depois!
     
     # Cria as filas. O maxsize=50 é o "buffer limitado" que o professor exigiu.
     fila_tarefas = mp.Queue(maxsize=50) 
